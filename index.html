@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>onam Pookalam</title>
+  <style>
+    body {
+      margin: 0;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: #e5e1d9;
+      font-family: 'Segoe UI', sans-serif;
+      flex-direction: column;
+    }
+
+    h1 {
+      margin-bottom: 20px;
+      color: hwb(7 6% 22%);
+    }
+
+    canvas {
+      border-radius: 50%;
+      box-shadow: 0 0 30px rgba(0,0,0,0.3);
+      background: rgb(209, 15, 22);
+    }
+  </style>
+</head>
+<body>
+  <h1>🌸 Onam Pookalam 🌸</h1>
+  <canvas id="pookalam" width="500" height="500"></canvas>
+
+  <script>
+    const canvas = document.getElementById("pookalam");
+    const ctx = canvas.getContext("2d");
+    const cx = canvas.width / 2;
+    const cy = canvas.height / 2;
+
+    // Colors for petals
+    const colors = ["#ff69b4", "#ffa500", "#f6b200", "#0b6623", "#8a2be2", "#ff4500"];
+
+    function drawPetal(radius, length, angle, color) {
+      ctx.save();
+      ctx.translate(cx, cy);
+      ctx.rotate(angle);
+
+      ctx.beginPath();
+      ctx.moveTo(0, -radius);
+      ctx.bezierCurveTo(length, -radius, length, radius, 0, radius);
+      ctx.bezierCurveTo(-length, radius, -length, -radius, 0, -radius);
+      ctx.fillStyle = color;
+      ctx.fill();
+
+      ctx.restore();
+    }
+
+    function drawLayer(petals, radius, length, colorSet) {
+      for (let i = 0; i < petals; i++) {
+        let angle = (2 * Math.PI / petals) * i;
+        let color = colorSet[i % colorSet.length];
+        drawPetal(radius, length, angle, color);
+      }
+    }
+
+    function drawPookalam() {
+      // Outer big petals
+      drawLayer(16, 200, 100, [colors[1], colors[2], colors[3]]);
+
+      // Middle layer
+      drawLayer(12, 140, 70, [colors[0], colors[4], colors[2]]);
+
+      // Inner layer
+      drawLayer(8, 80, 50, [colors[5], colors[0], colors[3]]);
+
+      // Center circle
+      ctx.beginPath();
+      ctx.arc(cx, cy, 40, 0, 2 * Math.PI);
+      ctx.fillStyle = colors[1];
+      ctx.fill();
+
+      ctx.beginPath();
+      ctx.arc(cx, cy, 20, 0, 2 * Math.PI);
+      ctx.fillStyle = "#ffd700"; // golden yellow
+      ctx.fill();
+    }
+
+    drawPookalam();
+  </script>
+</body>
+</html>
